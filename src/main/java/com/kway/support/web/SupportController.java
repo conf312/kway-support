@@ -35,7 +35,7 @@ public class SupportController {
             .body(new RestMessage(HttpStatus.OK, supportService.save(request)));
     }
 
-    @GetMapping("/update-inquiry")
+    @GetMapping("/update-support")
     public ResponseEntity<RestMessage> updateSupport(Support.Request request) {
         return ResponseEntity.ok()
             .headers(new HttpHeaders())

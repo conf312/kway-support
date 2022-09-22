@@ -39,6 +39,7 @@ public class Inquiry extends BaseTime {
         private String email;
         private String title;
         private String contents;
+        private String recaptchaValue;
 
         public Inquiry toEntity() {
             return Inquiry.builder()

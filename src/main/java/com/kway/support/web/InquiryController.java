@@ -3,19 +3,25 @@ package com.kway.support.web;
 import com.kway.support.domain.inquiry.Inquiry;
 import com.kway.support.message.RestMessage;
 import com.kway.support.service.InquiryService;
+import com.kway.support.util.HttpApiUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 @RequestMapping("/inquiry")
 @RequiredArgsConstructor
 @RestController
 public class InquiryController {
+    @Value("${api.endpoint.recaptchaSiteVerify}")
+    private String recaptchaSiteVerifyEndpoint;
+    @Value("${api.secret.recaptcha}")
+    private String secretRecaptcha;
+
     private final InquiryService inquiryService;
 
     @GetMapping("/list")
@@ -27,11 +33,21 @@ public class InquiryController {
             .body(new RestMessage(HttpStatus.OK, inquiryService.findAll(request, page, pageSize)));
     }
 
-    @GetMapping("/save")
-    public ResponseEntity<RestMessage> save(Inquiry.Request request) {
+    @PostMapping("/save")
+    public ResponseEntity<RestMessage> save(Inquiry.Request request) throws Exception {
+        String url = recaptchaSiteVerifyEndpoint + "?secret=" + secretRecaptcha + "&response=" + request.getRecaptchaValue();
+        HashMap<String, Object> recaptchaMap = new HttpApiUtil().getDataFromJson(
+                url, "UTF-8", "post", "", "application/x-www-form-urlencoded");
+        boolean recaptchaResult = (boolean) recaptchaMap.get("success");
+        Long resultSave = 0L;
+
+        if (recaptchaResult) {
+            resultSave = inquiryService.save(request);
+        }
+
         return ResponseEntity.ok()
             .headers(new HttpHeaders())
-            .body(new RestMessage(HttpStatus.OK, inquiryService.save(request)));
+            .body(new RestMessage(HttpStatus.OK, resultSave));
     }
 
     @GetMapping("/update-inquiry")
