@@ -35,10 +35,6 @@ public class SupportService {
         return support.type.containsIgnoreCase(contents);
     }
 
-    public Long save(Support.Request request) {
-        return supportRepository.save(request.toEntity()).getId();
-    }
-
     public HashMap<String, Object> findAll(Support.Request request, Integer page, Integer pageSize) {
         HashMap<String, Object> resultMap = new HashMap<>();
 
@@ -59,18 +55,5 @@ public class SupportService {
         resultMap.put("list", list);
 
         return resultMap;
-    }
-
-    public Long updateSupport(Support.Request request) {
-        return jpaQueryFactory.update(support)
-            .set(support.title, request.getTitle())
-            .set(support.contents, request.getContents())
-            .execute();
-    }
-
-    public Long deleteSupport(Support.Request request) {
-        return jpaQueryFactory.delete(support)
-            .where(support.id.in(request.getId()))
-            .execute();
     }
 }

@@ -58,6 +58,7 @@ public class Support extends BaseTime {
         private final String title;
         private final String contents;
         private final int readCnt;
+        private final String registerTime;
 
         public Response(Object o) {
             Support support = (Support) o;
@@ -66,6 +67,7 @@ public class Support extends BaseTime {
             this.title = support.getTitle();
             this.contents = support.getContents();
             this.readCnt = support.getReadCnt();
+            this.registerTime = toStringDateTime(support.getRegisterTime());
         }
     }
 }

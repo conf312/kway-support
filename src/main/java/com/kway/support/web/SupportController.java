@@ -27,25 +27,4 @@ public class SupportController {
             .headers(new HttpHeaders())
             .body(new RestMessage(HttpStatus.OK, supportService.findAll(request, page, pageSize)));
     }
-
-    @GetMapping("/save")
-    public ResponseEntity<RestMessage> save(Support.Request request) {
-        return ResponseEntity.ok()
-            .headers(new HttpHeaders())
-            .body(new RestMessage(HttpStatus.OK, supportService.save(request)));
-    }
-
-    @GetMapping("/update-support")
-    public ResponseEntity<RestMessage> updateSupport(Support.Request request) {
-        return ResponseEntity.ok()
-            .headers(new HttpHeaders())
-            .body(new RestMessage(HttpStatus.OK, supportService.updateSupport(request)));
-    }
-
-    @GetMapping("/delete")
-    public ResponseEntity<RestMessage> deleteSupport(Support.Request request) {
-        return ResponseEntity.ok()
-            .headers(new HttpHeaders())
-            .body(new RestMessage(HttpStatus.OK, supportService.deleteSupport(request)));
-    }
 }
