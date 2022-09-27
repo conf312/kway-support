@@ -56,4 +56,8 @@ public class SupportService {
 
         return resultMap;
     }
+
+    public Support.Response findById(Support.Request request) {
+        return new Support.Response(supportRepository.findById(request.getId()).get());
+    }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 @RequestMapping("/support")
 @RequiredArgsConstructor
@@ -26,5 +27,12 @@ public class SupportController {
         return ResponseEntity.ok()
             .headers(new HttpHeaders())
             .body(new RestMessage(HttpStatus.OK, supportService.findAll(request, page, pageSize)));
+    }
+
+    @GetMapping("/detail")
+    public ResponseEntity<RestMessage> findById(Support.Request request) {
+        return ResponseEntity.ok()
+            .headers(new HttpHeaders())
+            .body(new RestMessage(HttpStatus.OK, supportService.findById(request)));
     }
 }
